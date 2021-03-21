@@ -23,7 +23,7 @@ Ancient | Cryptography | 50 | HackRushCTF{asoka​}
 prime magic 1 | Cryptography | 100 | HackRushCTF{RSA_1s_c00l}
 prime magic 2 | Cryptography | 300 | HackRushCTF{10_1s_b3tt3r_th4n_2?}
 Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
-|||
+
 
 <br>
 <br>
@@ -39,13 +39,26 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
     **Challenge**
     
     Have you heard about garbage in, garbage out?
+
     <br>
+    
     Connect to the actual challenge using: 
-    <br>
+
     nc 3.142.26.175 12345
+
+    The [C code]() and [compiled binary]() are given.
+    <br>
     
     **Solution**
 
-        We used format string vulnerability to obtain the hex values of the flag. As mentioned in [this article](https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/) printf can leak information from the stack if we input %llx. This gives the long long hex value from the stack. Using this information, we gave a long string - %llx %llx %llx %llx …. as input to the nc 3.142.26.175 12345.
+    After seeing the c code, we found out that, there is a `flag` variable in main function. The main function is opening a txt file and reading it and storing its value in `flag`. There is no way we could get the value of flag without the file, hence we can only get the flag variable by some exploitation on the sever end.
 
-        We then ran the above input ]multiple times and noticed that only some values repeated whereas other values changed on each execution. This meant that the values that were changing must be garbage values whereas the values that did not change must represent some actual information. We observed that value starting from %10$llx remained the same. We then converted the output hex to Ascii and found “hsuRkcaH” as the Ascii value. This result motivated us and we felt that we were on the right track. We then fetched values uptill %15$llx after which the values again changed on different iterations. On decoding the hex values obtained from %10$llx to %15$llx, and reversing each string, we got the desired flag.
+    We used format string vulnerability to obtain the hex values of the flag. As mentioned in [this article](https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/) `printf` can leak information from the stack if we input `%llx`. This gives the long long hex value from the stack. Using this information, we gave the input as a long string - <br>
+    
+    ```%llx %llx %llx %llx %llx %llx %llx %llx %llx %llx``` <br>
+    
+    as input to the given server IP and port (3.142.26.175, 12345). 
+    
+    <br>  
+
+    We then ran the above input multiple times and noticed that only some values repeated whereas other values changed on each execution. This meant that the values that were changing must be garbage values whereas the values that did not change must represent some actual information. We observed that value starting from `%10$llx` remained the same. We then converted the output hex to Ascii and found “hsuRkcaH” as the Ascii value. This result motivated us and we felt that we were on the right track. We then fetched values uptill %15$llx after which the values again changed on different iterations. On decoding the hex values obtained from %10$llx to %15$llx, and reversing each string, we got the desired flag.
