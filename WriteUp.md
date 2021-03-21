@@ -122,15 +122,15 @@ so_slooow | Reverse Engineering | 500 |-
 
     Using radare2, we made some important conclusion. First off, the `main` function called a `check_flag` function. In `check_flag`, there seemed to be some sort of while loop that was run until the counter was incremented from 0 to 36. This could mean that the flag has a length of 36 which was confirmed later on. We made a few more deductions, but the assembly code was very complex to understand. After going through some online resources and [this](https://www.youtube.com/watch?v=RCgEIBfnTEI) video, we came across a wonderful tool called [Ghidra](https://ghidra-sre.org/).<br>
 
-    Ghidra is an awesome tool that decompiled the binary file to a C file. Now, analysing the code was relatively easy. We found that the input to `check_flag` was first encrypted using the `mixup` function and then it was checked against an array called `flag`. The `flag` array contained hex values. On further investigation, we found that the input was reversed and then compared with `flag`, meaning that we needed to reverse `flag` in order to obtain the correct value. Also, the input was compared only with the corresponding multiples of 4 (0, 4, 8, and so on) in the `flag` array. Thus, we had to decrypt the values present at multiples of 4 starting from index 0 and ending at index 140 ((36-1) * 4). On converting to ASCII and reversing, we captured the flag.<br>
+    Ghidra is an awesome tool that decompiles a binary file into a C file. Now, analysing the code was relatively easy. We found that the input to `check_flag` was first encrypted using the `mixup` function and then it was checked against an array called `flag`. The `flag` array contained hex values. On further investigation, we found that the input was reversed and then compared with `flag`, meaning that we needed to reverse `flag` in order to obtain the correct value. Also, the input was compared only with the corresponding multiples of 4 (0, 4, 8, and so on) in the `flag` array. Thus, we had to decrypt the values present at multiples of 4 starting from index 0 and ending at index 140 ((36-1) * 4). On converting to ASCII and reversing, we captured the flag.<br>
 
-    ![main](images/main.PNG)
+    ![main](images/main.PNG)<br>
     *`main` function of mixed_up decompiled using Ghidra*<br>
 
-    ![main](images/mixed_up-check_flag.png)
+    ![main](images/mixed_up-check_flag.png)<br>
     *`check_flag` function*<br>
 
-    ![mixup](images/mixup.PNG)
+    ![mixup](images/mixup.PNG)<br>
     *`mixup` function*
 
     <br>
