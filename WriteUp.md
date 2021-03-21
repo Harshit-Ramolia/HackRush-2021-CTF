@@ -1,6 +1,6 @@
 # HackRush 2021 CTF
 
-We participated in this 3 day long capture the flag (CTF) competition hosted by HackRush at IITGN and secored the 1st position. We had no previous experience of solving CTF challenges and had participated with the hope to know something about hacking. It is needless to say that this competition provided us the experience we needed. 
+We participated in this 3 day long capture the flag (CTF) competition hosted by [HackRush](http://3.142.26.175/) at IITGN and secured the 1st position. We had no previous experience of solving CTF challenges and had participated with the hope to know something about hacking. It is needless to say that this competition provided us the experience we needed. 
 
 We enjoyed solving the questions, although we had to spent lots of time going through the resources and understanding the questions. But after spending time and effort, when you come across a hex byte or a string that starts as "Hack", the feeling of exhilaration is extremely rewarding.
 
