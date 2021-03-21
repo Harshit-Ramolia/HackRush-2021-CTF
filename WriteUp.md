@@ -124,17 +124,22 @@ so_slooow | Reverse Engineering | 500 |-
     ![mixup](images/mixup.PNG)
 
     <br>
-    And here is the code we used to crack the flag
+    
+    **Decryption:**<br>
+    First, we copied the hex values stored in the `flag` array to a python list. Then, we converted the hex to decimal values and removed the elements which were not at index that were multiples of 4. These values are given by the `flag_values` array. Then, we used the code below to crack the flag.
 
-        #include <bits/stdc++.h>
-        using namespace std;
+
+        #include <stdio.h>
+
         int main()
         {
-        
-            int local_14, param_1=1;
-            int local_10;
-            int local_c;
-            while (local_14 != 190)  // 190 is decimal value to corresponding character stored in FLAG array
+            int flag_values[] = {190, 204, 182, 12, 206, 204, 238, 44, 250, 158, 132, 174, 78, 42, 250, 206, 140, 250, 44, 78, 38, 140, 22, 226, 222, 98, 42, 194, 22, 206, 174, 74, 214, 198, 134, 18};
+        int local_14, param_1=1;
+        int local_10;
+        int local_c;
+
+        for (int i = 0; i < 36; i++) {
+            while (local_14 != flag_values[i])  // i is decimal value to corresponding character stored in FLAG array
             {
                 local_14 = 0;
                 local_10 = 0;
@@ -152,12 +157,13 @@ so_slooow | Reverse Engineering | 500 |-
                 }
                 param_1++;
             }
+        
             
             param_1--;
-            cout<<local_14<<" "<<(char)param_1;
-        
-            return 0;
+            printf("%d %c\n", local_14, (char)param_1);
         }
+        return 0;
+    }
 
 
     PS: The flag truly lives up to its name :)
@@ -244,7 +250,11 @@ so_slooow | Reverse Engineering | 500 |-
     [Here](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/cryptography/prime_magic_2.py) is the attached python file.
 
     **Solution**<br>
-    
+    We used the same tools as above to obtain the prime factors of the `big_num`. However, we were surprised that instead of only two prime factors, the `big_num` had multiple prime factors.<br>
+
+        big_num = 25992347861099219061069221843214518860756327486173319027118759091795941826930677
+
+    So, we read online about multi prime RSA cryptography from [here](https://crypto.stackexchange.com/questions/11287/rsa-with-modulus-product-of-many-primes) and [here](https://tools.ietf.org/html/rfc3447). We used this [tool](https://gist.github.com/jackz314/09cf253d3451f169c2dbb6bbfed73782) to then obtain the decrypted flag.
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{10_1s_b3tt3r_th4n_2?}**
 
@@ -258,6 +268,95 @@ so_slooow | Reverse Engineering | 500 |-
 
     **Solution**<br>
     We first proceeded by taking a for loop that was nested 6 times to find the last three bytes in both the keys.
+
+        L = list(string.printable)
+
+        print(len(L))
+
+        for i in L:
+            for j in L:
+                for k in L:
+                    for m in L:
+                        for n in L:
+                            for o in L:
+                                key1 = b"0"*29 + i.encode() + j.encode() + k.encode()
+                                key2 = b"0"*29 + m.encode() + n.encode() + o.encode()
+    
+    This was followed by checking whether the key is correct and then decrypting. As the number of printable characters in ASCII is 100, the code had to go through a total of 100^6 iterations. This is clearly not feasible but still we kept the code running for quite some time. However, as expected we did not get any answer.<br>
+
+    After searching for resources online, we edited the above code as follows:
+
+        import base64
+        from Crypto.Cipher import AES
+        import hashlib
+        from Crypto.Random import get_random_bytes
+        import string
+        import base64
+        
+        test = b'testing 1..2..3!'
+        encrypted_test = b'v8MshgtU1CfDNDuajMHzkQ=='
+        flag = b'aUyXnj4SxFmYht39qIppFKIVDjQ/tTBbPwpSLo2IoHo='
+        
+        encrypted_test = base64.b64decode(encrypted_test)
+        flag = base64.b64decode(flag)
+        
+        iv = hashlib.md5(b"Goodluck!").digest()
+        alphabet = string.printable
+        key_base = '0'*29
+        
+        # decrypting
+        phase1 = {}
+        data =  encrypted_test
+        for a in string.printable:
+        for b in string.printable:
+            for c in string.printable:
+                key = key_base+a+b+c
+                key = key.encode()
+                cipher_decrypt = AES.new(key, AES.MODE_CBC, IV=iv)
+                ciphertext = cipher_decrypt.decrypt(data)
+                phase1[key] = ciphertext
+        print('P1 done')
+        
+        # encrypting
+        phase2 = {}
+        data = test
+        for a in string.printable:
+        for b in string.printable:
+            for c in string.printable:
+                key = key_base+a+b+c
+                key = key.encode()
+                cipher_encrypt = AES.new(key, AES.MODE_CBC, IV=iv)
+                ciphertext = cipher_encrypt.encrypt(data)
+                phase2[key] = ciphertext
+        print('P2 done')
+        
+        s1 = set(phase1.values())
+        s2 = set(phase2.values())
+        s3 = s1 & s2
+        match = s3.pop()
+        
+        for k,v in phase1.items():
+        if v == match:
+            key1 = k
+            print(f'Key1: {key1}')
+        for k,v in phase2.items():
+        if v == match:
+            key2 = k
+            print(f'Key2: {key2}')
+        
+        # decrypt flag
+        data = flag
+        cipher_decrypt = AES.new(key1, AES.MODE_CBC, IV=iv)
+        ciphertext = cipher_decrypt.decrypt(data)
+        cipher_decrypt = AES.new(key2, AES.MODE_CBC, IV=iv)
+        ciphertext = cipher_decrypt.decrypt(ciphertext)
+        print(ciphertext.decode('utf-8'))
+
+    Source: https://vulndev.io/writeup/2019/12/28/ctf-2aes.html
+
+    The above algorithm is very clever as it encrypts with one key and decrypts with the other. Now, both must be equal and we can find the corresponding keys. Once we get the keys, we can find the flag.<br>
+    
+    This reduces the number of iterations from 100^6 to 2 * 100^3.
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{7w1c3_1s_n0t_b3tt3r}**
 
