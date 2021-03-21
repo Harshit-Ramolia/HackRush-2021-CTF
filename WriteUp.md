@@ -10,7 +10,7 @@ We enjoyed solving the questions, although we had to spent lots of time going th
 Problem | Category | Points | Flag
 --------|:----------:| :-----: |:-----:
 |||<br>
-cliff | Binary Exploitation | 300 | HackRushCTF{N0w_Y0u_kn0w_ab0ut_form4t_5tr1ng5}
+[cliff](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/WriteUp.md#cliff-300-pts) | Binary Exploitation | 300 | HackRushCTF{N0w_Y0u_kn0w_ab0ut_form4t_5tr1ng5}
 simple_login | Binary Exploitation | 500| -
 echo_back | Binary Exploitation | 1000|-
 real_hack | Binary Exploitation | 1500|-
