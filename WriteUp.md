@@ -36,12 +36,12 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
     **Challenge**
     
     Have you heard about garbage in, garbage out?
-    
     Connect to the actual challenge using: 
 
     nc 3.142.26.175 12345
 
     The [C code]() and [compiled binary]() are given.
+    
     <br>
     
     **Solution**
