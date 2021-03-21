@@ -73,7 +73,29 @@ so_slooow | Reverse Engineering | 500 |-
 
     **Solution**
 
-    // Add solution
+    Since we had been provided the code (c file) of this problem, solving this became very easy.
+
+    Manually find each character by finding its ascii value and converted to its character.
+
+        char flag[50] = "HackRushCTF{";
+
+        for(int i = 0; i < 12; i++) {
+        if(flag[i] != input[i]) {
+            fail();
+            }
+        }
+
+        // This part provides the intial part of the flag
+    <br>
+        
+        if(input[12] != 120) {
+            fail();
+        }
+
+        // Throgh this part we know that 13th charecter is corresponding ascii value of 120 which is "x"
+
+        // Similary we found out all the charecters ascii and corresponding charecter
+
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{x86_f1r5t_t1m3?}**
 
