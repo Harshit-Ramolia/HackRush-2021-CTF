@@ -61,6 +61,8 @@ so_slooow | Reverse Engineering | 500 |-
 
     We then ran the above input multiple times and noticed that only some values repeated whereas other values changed on each execution. This meant that the values that were changing must be garbage values whereas the values that did not change must represent some actual information. We observed that value starting from `%10$llx` remained the same. Here, 10 means the 10th value returned by the long string of llx input as shown above. Converting the output hex of `%10$llx` to ASCII we got “hsuRkcaH” as the ASCII value. This result motivated us and we felt that we were on the right track. We then fetched values uptill `%15$llx` after which the output again changed on different iterations. On decoding the hex values obtained from `%10$llx` to `%15$llx`, and reversing each string, we got the desired flag.
 
+    <br>
+
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{N0w_Y0u_kn0w_ab0ut_form4t_5tr1ng5}**
 
 <br>
@@ -99,7 +101,8 @@ so_slooow | Reverse Engineering | 500 |-
 
         // Similary we found out all the charecters ascii and corresponding charecter
 
-
+    <br>
+    
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{x86_f1r5t_t1m3?}**
 
 <br>
@@ -109,6 +112,8 @@ so_slooow | Reverse Engineering | 500 |-
     **Challenge**<br>
     What a terrible mess<br>
     Here is the [compiled binary](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/reverse-engineering/mixed_up).
+
+    <br>
 
     **Solution**<br>
     We have been provided only a binary file and nothing else. Solution of simple check question had become easy because we had a code file. So, we tried to figure out some ways through which we could reverse or decompile the binary file.<br>
@@ -120,8 +125,13 @@ so_slooow | Reverse Engineering | 500 |-
     Ghidra is an awesome tool that decompiled the binary file to a C file. Now, analysing the code was relatively easy. We found that the input to `check_flag` was first encrypted using the `mixup` function and then it was checked against an array called `flag`. The `flag` array contained hex values. On further investigation, we found that the input was reversed and then compared with `flag`, meaning that we needed to reverse `flag` in order to obtain the correct value. Also, the input was compared only with the corresponding multiples of 4 (0, 4, 8, and so on) in the `flag` array. Thus, we had to decrypt the values present at multiples of 4 starting from index 0 and ending at index 140 ((36-1) * 4). On converting to ASCII and reversing, we captured the flag.<br>
 
     ![main](images/main.PNG)
+    *`main` function of mixed_up decompiled using Ghidra*<br>
+
     ![main](images/mixed_up-check_flag.png)
+    *`check_flag` function*<br>
+
     ![mixup](images/mixup.PNG)
+    *`mixup` function*
 
     <br>
     
@@ -134,39 +144,41 @@ so_slooow | Reverse Engineering | 500 |-
         int main()
         {
             int flag_values[] = {190, 204, 182, 12, 206, 204, 238, 44, 250, 158, 132, 174, 78, 42, 250, 206, 140, 250, 44, 78, 38, 140, 22, 226, 222, 98, 42, 194, 22, 206, 174, 74, 214, 198, 134, 18};
-        int local_14, param_1=1;
-        int local_10;
-        int local_c;
+            int local_14, param_1=1;
+            int local_10;
+            int local_c;
 
-        for (int i = 0; i < 36; i++) {
-            while (local_14 != flag_values[i])  // i is decimal value to corresponding character stored in FLAG array
-            {
-                local_14 = 0;
-                local_10 = 0;
-                
-                while (local_10 < 4)
+            for (int i = 0; i < 36; i++) {
+                while (local_14 != flag_values[i])  // i is decimal value to corresponding character stored in FLAG array
                 {
-                    local_14 = local_14 | (1 << (local_10 & 31) & param_1) << ((local_10 *( -2) + 7 & 31) & 255);
-                    local_10 = local_10 + 1;
+                    local_14 = 0;
+                    local_10 = 0;
+                    
+                    while (local_10 < 4)
+                    {
+                        local_14 = local_14 | (1 << (local_10 & 31) & param_1) << ((local_10 *( -2) + 7 & 31) & 255);
+                        local_10 = local_10 + 1;
+                    }
+                    local_c = 4;
+                    while (local_c < 8)
+                    {
+                        local_14 = local_14 | (int)(1 << (local_c & 31) & param_1) >> (local_c * '\x02' - 7 & 31) & 0xffU;
+                        local_c = local_c + 1;
+                    }
+                    param_1++;
                 }
-                local_c = 4;
-                while (local_c < 8)
-                {
-                    local_14 = local_14 | (int)(1 << (local_c & 31) & param_1) >> (local_c * '\x02' - 7 & 31) & 0xffU;
-                    local_c = local_c + 1;
-                }
-                param_1++;
-            }
-        
             
-            param_1--;
-            printf("%d %c\n", local_14, (char)param_1);
+                
+                param_1--;
+                printf("%d %c\n", local_14, (char)param_1);
+            }
+            return 0;
         }
-        return 0;
-    }
 
 
     PS: The flag truly lives up to its name :)
+
+    <br>
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{Gh1dr4_1s_Tru!y_4w3s0m3}**
 
@@ -177,21 +189,20 @@ so_slooow | Reverse Engineering | 500 |-
 1. ### **Ancient (50 pts)**
 
     **Challenge**<br>
-    I found some wierd text, Can you find out what this means?
+    I found some wierd text, Can you find out what this means?<br>
+    *(Text is not included as it cannot be represented by markdown)*
     <br>
 
-    𑀩𑁆𑀭𑀸𑀳𑁆𑀫𑀻 𑀮𑀺𑀧𑀺 𑀪𑀸𑀭𑀢 𑀓𑀻 𑀧𑁆𑀭𑀸𑀘𑀻𑀦𑀢𑀫 𑀮𑀺𑀧𑀺𑀬𑁄ं 𑀫𑁂ं 𑀲𑁂 𑀏𑀓 𑀳𑁃 𑀬𑀳 𑀳𑁃 𑀆𑀧𑀓𑀸 𑀚𑀯𑀸𑀩 :
-    
-    HackRushCTF{𑀅𑀰𑁄𑀓​}
-    
     **Solution**<br>
-    After searching few letters it was easy to know that symbols belongs to brahmin script
+    After searching few letters it was easy to know that symbols belongs to brahmi script
 
-    ![Brahmin Script Translation](images/Brahmi_script_Wikipedia.png)
+    ![Brahmi Script Translation](images/Brahmi_script_Wikipedia.png)
 
     Using above table we decrypted 𑀅 and 𑀓. <br>
     Then we found [fb post](https://www.facebook.com/1094200484098434/posts/1655395287978948/),
     where it is mentioned 𑀅𑀰𑁄𑀓 = Aśōka.
+
+    <br>
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{asoka​}**
 
@@ -203,6 +214,8 @@ so_slooow | Reverse Engineering | 500 |-
     This should be simple.<br>
     The correct output is given at the end of the script in comments<br>
     [Here](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/cryptography/prime_magic_1.py) is the attached python file.
+
+    <br>
 
     **Solution**<br>
     After reading resource about RSA from [this](https://ctf101.org/cryptography/what-is-rsa/) website, we concluded that we had to break the `big_num` into its prime factors.<br>
@@ -239,6 +252,8 @@ so_slooow | Reverse Engineering | 500 |-
 
     Converting m to ascii we got the desire flag
 
+    <br>
+
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{RSA_1s_c00l}**
 
     <br>
@@ -249,12 +264,28 @@ so_slooow | Reverse Engineering | 500 |-
     The same challenge again?<br>
     [Here](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/cryptography/prime_magic_2.py) is the attached python file.
 
-    **Solution**<br>
-    We used the same tools as above to obtain the prime factors of the `big_num`. However, we were surprised that instead of only two prime factors, the `big_num` had multiple prime factors.<br>
+    <br>
 
-        big_num = 25992347861099219061069221843214518860756327486173319027118759091795941826930677
+    **Solution**<br>
+    We used the same tools as above to obtain the prime factors of the `big_num`. However, we were surprised that instead of only two prime factors, `big_num` had multiple prime factors.<br>
+
+        big_num = 13269353506569762322866448443179444023604712744966341096534397703952746262066379915270
+
+    The prime factors of `big_num` are
+
+        a = 2
+        b = 3
+        c = 5
+        d = 7
+        e = 11
+        f = 13
+        g = 17
+        h = 3757160792909754673945392226295475594863
+        i = 6918082374901313855125397665325977135579
 
     So, we read online about multi prime RSA cryptography from [here](https://crypto.stackexchange.com/questions/11287/rsa-with-modulus-product-of-many-primes) and [here](https://tools.ietf.org/html/rfc3447). We used this [tool](https://gist.github.com/jackz314/09cf253d3451f169c2dbb6bbfed73782) to then obtain the decrypted flag.
+
+    <br>
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{10_1s_b3tt3r_th4n_2?}**
 
@@ -265,6 +296,8 @@ so_slooow | Reverse Engineering | 500 |-
     **Challenge**<br>
     Wow, double the security! No one can know the flag now!<br>
     [Here](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/cryptography/double_the_trouble.py) is the attached python file.
+
+    <br>
 
     **Solution**<br>
     We first proceeded by taking a for loop that was nested 6 times to find the last three bytes in both the keys.
@@ -357,6 +390,8 @@ so_slooow | Reverse Engineering | 500 |-
     The above algorithm is very clever as it encrypts with one key and decrypts with the other. Now, both must be equal and we can find the corresponding keys. Once we get the keys, we can find the flag.<br>
     
     This reduces the number of iterations from 100^6 to 2 * 100^3.
+
+    <br>
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{7w1c3_1s_n0t_b3tt3r}**
 
