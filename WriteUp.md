@@ -15,14 +15,14 @@ simple_login | Binary Exploitation | 500| -
 echo_back | Binary Exploitation | 1000|-
 real_hack | Binary Exploitation | 1500|-
 |||<br>
-simple_check | Reverse Engineering | 200 |HackRushCTF{x86_f1r5t_t1me?}
+[simple_check](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/WriteUp.md#simple_check-200-pts) | Reverse Engineering | 200 |HackRushCTF{x86_f1r5t_t1me?}
 so_slooow | Reverse Engineering | 500 |-
-mixed_up | Reverse Engineering | 1000 | HackRushCTF{Gh1dr4_1s_Tru!y_4w3s0m3}
+[mixed_up](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/WriteUp.md#mixed_up-1000-pts) | Reverse Engineering | 1000 | HackRushCTF{Gh1dr4_1s_Tru!y_4w3s0m3}
 |||<br>
-Ancient | Cryptography | 50 | HackRushCTF{asoka​}
-prime magic 1 | Cryptography | 100 | HackRushCTF{RSA_1s_c00l}
-prime magic 2 | Cryptography | 300 | HackRushCTF{10_1s_b3tt3r_th4n_2?}
-Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
+[Ancient](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/WriteUp.md#ancient-50-pts) | Cryptography | 50 | HackRushCTF{asoka​}
+[prime magic 1](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/WriteUp.md#prime-magic-1-100-pts) | Cryptography | 100 | HackRushCTF{RSA_1s_c00l}
+[prime magic 2](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/WriteUp.md#prime-magic-2-300-pts) | Cryptography | 300 | HackRushCTF{10_1s_b3tt3r_th4n_2?}
+[Double the trouble](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/WriteUp.md#double-the-trouble-800-pts) | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
 
 
 <br>
