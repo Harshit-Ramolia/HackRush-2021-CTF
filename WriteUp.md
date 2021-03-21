@@ -46,7 +46,14 @@ so_slooow | Reverse Engineering | 500 |-
     
     **Solution**
 
-    After seeing the c code, we found out that, there is a `flag` variable in main function. The main function is opening a txt file and reading it and storing its value in `flag`. There is no way we could get the value of flag without the file, hence we can only get the flag variable by some exploitation on the sever end.
+    After seeing the c code, we found out that, there is a `flag` variable in main function. The main function is opening a txt file and reading it and storing its value in `flag`. There is no way we could get the value of flag without the file, hence we can only get 
+    the flag variable by some exploitation on the sever end.
+
+    Since the variable `input` which has data taken from user used in `printf` as `printf(input)` instead of `printf("%s",input)`, there is a vulnerability in code which we can use.
+        
+        char input[512];
+        fgets(input, 512, stdin);
+        printf(input);
 
     We used format string vulnerability to obtain the hex values of the flag. As mentioned in [this article](https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/) `printf` can leak information from the stack if we input `%llx`. This gives the long long hex value from the stack. Using this information, we gave the input as a long string consisting of `%llx` as follows - <br>
     
@@ -108,11 +115,55 @@ so_slooow | Reverse Engineering | 500 |-
     Here is the [compiled binary](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/reverse-engineering/mixed_up).
 
     **Solution**<br>
-    First we tried to use the `strings` command to list out all the strings present in the binary file to see if the flag was stored as plaintext. This was not the case. So, we tried to analyse the binary file using tools like gdb and radare2.<br> 
-    Using radare2, we made some important conclusion. First off, the `main` function called a `check_flag` function. In `check_flag`, there seemed to be some sort of while loop that was run until the counter was incremented from 0 to 36. This could mean that the flag has a length of 36 which was confirmed later on. We made a few more deductions, but the assembly code was very complex to understand. After going through some online resources and [this](https://www.youtube.com/watch?v=RCgEIBfnTEI) video, we came across a wonderful tool called Ghidra.<br> 
-    Ghidra is an awesome tool that decompiled the binary file to a C file. Now, analysing the code was relatively easy. We found that `check_flag` was first encrypted using the `mixup` function and then it was checked against an array called `flag`. The `flag` array contained hex values. On further investigation, we found that the input was reversed and then compared with `flag`, meaning that we needed to reverse `flag` in order to obtain the correct value. Also, the input was compared only with the corresponding multiples of 4 (0, 4, 8, and so on) in the `flag` array. Thus, we had to decrypt the values present at multiples of 4 starting from index 0 and ending at index 140 ((36-1) * 4). On converting to ASCII and reversing, we captured the flag.
 
-    // add code for decrypting<br>
+    We have been provided only a binary file and nothing else. Solution of simple check question had become easy because we had a code file. So, we tried to figure out some ways through which we could reverse or decompile the binary file.<br>
+
+    First we tried to use the `strings` command to list out all the strings present in the binary file to see if the flag was stored as plaintext. This was not the case. So, we tried to analyse the binary file using tools like gdb and radare2.<br>
+
+    Using radare2, we made some important conclusion. First off, the `main` function called a `check_flag` function. In `check_flag`, there seemed to be some sort of while loop that was run until the counter was incremented from 0 to 36. This could mean that the flag has a length of 36 which was confirmed later on. We made a few more deductions, but the assembly code was very complex to understand. After going through some online resources and [this](https://www.youtube.com/watch?v=RCgEIBfnTEI) video, we came across a wonderful tool called Ghidra.<br>
+
+    Ghidra is an awesome tool that decompiled the binary file to a C file. Now, analysing the code was relatively easy. We found that `check_flag` was first encrypted using the `mixup` function and then it was checked against an array called `flag`. The `flag` array contained hex values. On further investigation, we found that the input was reversed and then compared with `flag`, meaning that we needed to reverse `flag` in order to obtain the correct value. Also, the input was compared only with the corresponding multiples of 4 (0, 4, 8, and so on) in the `flag` array. Thus, we had to decrypt the values present at multiples of 4 starting from index 0 and ending at index 140 ((36-1) * 4). On converting to ASCII and reversing, we captured the flag.<br>
+
+    ![main](images/main.PNG)
+    ![mixup](images/mixup.PNG)
+
+    <br>
+    And here is the code we used to crack the flag
+
+        #include <bits/stdc++.h>
+        using namespace std;
+        int main()
+        {
+        
+            int local_14, param_1=1;
+            int local_10;
+            int local_c;
+            while (local_14 != 190)  // 190 is decimal value to corresponding character stored in FLAG array
+            {
+                local_14 = 0;
+                local_10 = 0;
+                
+                while (local_10 < 4)
+                {
+                    local_14 = local_14 | (1 << (local_10 & 31) & param_1) << ((local_10 *( -2) + 7 & 31) & 255);
+                    local_10 = local_10 + 1;
+                }
+                local_c = 4;
+                while (local_c < 8)
+                {
+                    local_14 = local_14 | (int)(1 << (local_c & 31) & param_1) >> (local_c * '\x02' - 7 & 31) & 0xffU;
+                    local_c = local_c + 1;
+                }
+                param_1++;
+            }
+            
+            param_1--;
+            cout<<local_14<<" "<<(char)param_1;
+        
+            return 0;
+        }
+
+
     PS: The flag truly lives up to its name.
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{Gh1dr4_1s_Tru!y_4w3s0m3}**
@@ -153,9 +204,38 @@ so_slooow | Reverse Engineering | 500 |-
 
     **Solution**<br>
     After reading resource about RSA from [this](https://ctf101.org/cryptography/what-is-rsa/) website, we concluded that we had to break the `big_num` into its prime factors.<br>
+
+        big_number = 25992347861099219061069221843214518860756327486173319027118759091795941826930677
+
     We obtained the prime factors using [this](https://www.alpertron.com.ar/ECM.HTM) tool. 
 
-    // complete soln, add code
+        a = 3757160792909754673945392226295475594863
+        b = 6918082374901313855125397665325977135579    
+
+    Doing lcm of (a-1) and (b-1) using [thi site](https://goodcalculators.com/gcd-lcm-calculator/).
+
+        c = 12996173930549609530534610921607259430372826121502753979294844150952160187100118
+
+    Then using simple code we found out private key
+
+        for i in range(int(10e4)):
+            z = (1+i*c)//exponent
+            if (1+i*c)%exponent==0:
+                d=z
+                print(i,z,(1+i*c)%exponent)
+                break
+        
+        // (Private key) d = 4143141461021605992362476555001609339438476832271190913368130656664837920397375
+    
+    Then using this code we found out the hex of flag
+
+        message = pow(encrypted_flag,d,big_number)
+        m = hex(message)
+        print(m)
+
+        // m = 0x4861636b527573684354467b5253415f31735f6330306c7d
+
+    Converting m to ascii we got the desire flag
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{RSA_1s_c00l}**
 
