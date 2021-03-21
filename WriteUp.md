@@ -34,7 +34,6 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
 <br>
 
 1. ### **cliff (300 pts):**
-    <br>
     
     **Challenge**
     
