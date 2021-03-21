@@ -73,7 +73,29 @@ so_slooow | Reverse Engineering | 500 |-
 
     **Solution**
 
-    // Add solution
+    Since we had been provided the code (c file) of this problem, solving this became very easy.
+
+    Manually find each character by finding its ascii value and converted to its character.
+
+        char flag[50] = "HackRushCTF{";
+
+        for(int i = 0; i < 12; i++) {
+        if(flag[i] != input[i]) {
+            fail();
+            }
+        }
+
+        // This part provides the intial part of the flag
+    <br>
+        
+        if(input[12] != 120) {
+            fail();
+        }
+
+        // Throgh this part we know that 13th charecter is corresponding ascii value of 120 which is "x"
+
+        // Similary we found out all the charecters ascii and corresponding charecter
+
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{x86_f1r5t_t1m3?}**
 
@@ -103,10 +125,20 @@ so_slooow | Reverse Engineering | 500 |-
 
     **Challenge**<br>
     I found some wierd text, Can you find out what this means?
+    <br>
 
+    𑀩𑁆𑀭𑀸𑀳𑁆𑀫𑀻 𑀮𑀺𑀧𑀺 𑀪𑀸𑀭𑀢 𑀓𑀻 𑀧𑁆𑀭𑀸𑀘𑀻𑀦𑀢𑀫 𑀮𑀺𑀧𑀺𑀬𑁄ं 𑀫𑁂ं 𑀲𑁂 𑀏𑀓 𑀳𑁃 𑀬𑀳 𑀳𑁃 𑀆𑀧𑀓𑀸 𑀚𑀯𑀸𑀩 :
+    
+    HackRushCTF{𑀅𑀰𑁄𑀓​}
+    
     **Solution**<br>
-    //add soln<br>
     After searching few letters it was easy to know that symbols belongs to brahmin script
+
+    ![Brahmin Script Translation](images/Brahmi_script_Wikipedia.png)
+
+    Using above table we decrypted 𑀅 and 𑀓. <br>
+    Then we found [fb post](https://www.facebook.com/1094200484098434/posts/1655395287978948/),
+    where it is mentioned 𑀅𑀰𑁄𑀓 = Aśōka.
 
     **FLAG: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HackRushCTF{asoka​}**
 
