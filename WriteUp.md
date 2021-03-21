@@ -40,7 +40,7 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
 
     nc 3.142.26.175 12345
 
-    The [C code]() and [compiled binary]() are given.
+    The [C code](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/binary-exploitation/cliff.c) and [compiled binary](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/binary-exploitation/cliff) are given.
     
     <br>
     
@@ -69,7 +69,7 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
     **Challenge**
 
     Check this out, you can test if your flag is valid or not!<br>
-    The [C code]() and [compiled binary]() are given.
+    The [C code](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/reverse-engineering/simple_check.c) and [compiled binary](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/reverse-engineering/simple_check) are given.
 
     **Solution**
 
@@ -83,7 +83,7 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
 
     **Challenge**<br>
     What a terrible mess<br>
-    Here is the [compiled binary]().
+    Here is the [compiled binary](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/reverse-engineering/mixed_up).
 
     **Solution**<br>
     First we tried to use the `strings` command to list out all the strings present in the binary file to see if the flag was stored as plaintext. This was not the case. So, we tried to analyse the binary file using tools like gdb and radare2.<br> 
@@ -117,7 +117,7 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
     **Challenge**<br>
     This should be simple.<br>
     The correct output is given at the end of the script in comments<br>
-    [Here]() is the attached python file.
+    [Here](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/cryptography/prime_magic_1.py) is the attached python file.
 
     **Solution**<br>
     After reading resource about RSA from [this](https://ctf101.org/cryptography/what-is-rsa/) website, we concluded that we had to break the `big_num` into its prime factors.<br>
@@ -133,7 +133,7 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
 
     **Challenge**<br>
     The same challenge again?<br>
-    [Here]() is the attached python file.
+    [Here](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/cryptography/prime_magic_2.py) is the attached python file.
 
     **Solution**<br>
     
@@ -146,7 +146,7 @@ Double the trouble | Cryptography | 800 | HackRushCTF{7w1c3_1s_n0t_b3tt3r}
 
     **Challenge**<br>
     Wow, double the security! No one can know the flag now!<br>
-    [Here]() is the attached python file.
+    [Here](https://github.com/Harshit-Ramolia/HackRush-2021-CTF/blob/main/problem-files/cryptography/double_the_trouble.py) is the attached python file.
 
     **Solution**<br>
     We first proceeded by taking a for loop that was nested 6 times to find the last three bytes in both the keys.
